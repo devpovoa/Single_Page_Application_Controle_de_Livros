@@ -1,12 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/books.png";
+import { Link } from "react-router-dom";
 
 const MenuSuperior = () => {
-  const [activeLink, setActiveLink] = useState("inclusao");
+  // Recupera o link ativo do localStorage ou usa "inclusao" como padrão
+  const [activeLink, setActiveLink] = useState(
+    localStorage.getItem("activeLink") || "inclusao"
+  );
 
   const handleLinkClick = (link) => {
     setActiveLink(link);
+    localStorage.setItem("activeLink", link);
   };
+
+  useEffect(() => {
+    const storedActiveLink = localStorage.getItem("activeLink");
+    if (storedActiveLink) {
+      setActiveLink(storedActiveLink);
+    }
+  }, []);
 
   return (
     <nav
@@ -14,7 +26,7 @@ const MenuSuperior = () => {
       style={{ background: "linear-gradient(to right, #2980b9, #6dd5fa)" }}
     >
       <div className="container">
-        <a className="navbar-brand" href="#">
+        <span className="navbar-brand">
           <img
             src={logo}
             width="40"
@@ -23,42 +35,42 @@ const MenuSuperior = () => {
             alt="Logo"
           />
           Controle de Livros
-        </a>
+        </span>
 
         <ul className="navbar-nav nav-underline justify-content-end">
           <li className="nav-item">
-            <a
+            <Link
+              to="/"
               className={`nav-link ${
                 activeLink === "inclusao" ? "active" : ""
               }`}
               aria-current={activeLink === "inclusao" ? "page" : undefined}
-              href="#"
               onClick={() => handleLinkClick("inclusao")}
             >
               Inclusão
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a
+            <Link
+              to="/manutencao"
               className={`nav-link ${
                 activeLink === "manutencao" ? "active" : ""
               }`}
               aria-current={activeLink === "manutencao" ? "page" : undefined}
-              href="#"
               onClick={() => handleLinkClick("manutencao")}
             >
               Manutenção
-            </a>
+            </Link>
           </li>
           <li className="nav-item">
-            <a
+            <Link
+              to="/resumo"
               className={`nav-link ${activeLink === "resumo" ? "active" : ""}`}
               aria-current={activeLink === "resumo" ? "page" : undefined}
-              href="#"
               onClick={() => handleLinkClick("resumo")}
             >
               Resumo
-            </a>
+            </Link>
           </li>
         </ul>
       </div>

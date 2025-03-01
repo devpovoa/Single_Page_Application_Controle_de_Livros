@@ -26,3 +26,20 @@ npm i react-hook-form
 npm i axios
 ```
 
+
+
+### React Router
+
+```bash
+npm install react-router-dom@6
+
+```
+
+
+
+### React Google Charts
+
+```bash
+npm install --save react-google-charts
+```
+
