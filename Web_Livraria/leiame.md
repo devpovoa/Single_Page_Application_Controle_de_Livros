@@ -18,15 +18,11 @@ npm start
 npm i react-hook-form
 ```
 
-
-
 ### Pacote Axios
 
 ```bash
 npm i axios
 ```
-
-
 
 ### React Router
 
@@ -35,11 +31,8 @@ npm install react-router-dom@6
 
 ```
 
-
-
 ### React Google Charts
 
 ```bash
 npm install --save react-google-charts
 ```
-

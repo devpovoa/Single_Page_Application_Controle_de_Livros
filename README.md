@@ -1,70 +1,126 @@
-# Getting Started with Create React App
+# **📚 Single Page Application - Controle de Livros**
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Este projeto é uma aplicação de gerenciamento de livros, construída com **React** no front-end e integrada a um serviço de back-end para controle e manipulação dos dados.
 
-## Available Scripts
+---
 
-In the project directory, you can run:
+## **🚀 Front-end com React**
 
-### `npm start`
+### 🔹 1. **Inicie o projeto**
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Primeiro, crie o projeto React usando o `create-react-app`:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```bash
+npx create-react-app Minha_Pasta
+```
 
-### `npm test`
+Isso cria uma estrutura básica para a sua aplicação React.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### 🔹 2. **Configure os arquivos e inicie a aplicação**
 
-### `npm run build`
+Para rodar a aplicação, navegue até a pasta do projeto e execute o comando abaixo:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+```bash
+npm start
+```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+📌 O servidor de desenvolvimento será iniciado, e você pode acessar o projeto no navegador em `http://localhost:3000`.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## **📦 Dependências**
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### ✅ **React Hook Form** – 📋 Gerenciamento de formulários
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Facilita o controle de estado e validação de formulários em React.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+```bash
+npm i react-hook-form
+```
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### ✅ **Axios** – 🌍 Requisições HTTP
 
-## Learn More
+Utilizado para comunicação com a API do Web Service Controle de Livros.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```bash
+npm i axios
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### ✅ **React Router** – 🔀 Navegação entre páginas
 
-### Code Splitting
+Se precisar criar múltiplas páginas, instale o `react-router-dom`:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```bash
+npm install react-router-dom@6
+```
 
-### Analyzing the Bundle Size
+### ✅ **React Google Charts** – 📊 Visualização de dados
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Para exibir gráficos interativos na aplicação:
 
-### Making a Progressive Web App
+```bash
+npm install --save react-google-charts
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+---
 
-### Advanced Configuration
+## **🖥️ Back-end**
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+O back-end do Web Service Controle de Livros foi desenvolvido com as seguintes tecnologias:
 
-### Deployment
+- **Node.js** – Plataforma para execução do JavaScript no servidor
+- **Express.js** – Framework minimalista para construção da API
+- **Knex.js** – Query builder para comunicação com o banco de dados
+- **Oracle Database** – Banco de dados utilizado para armazenar as informações
+- **Swagger** – Ferramenta para documentação da API
+- **Docker** – Containerização do ambiente para garantir portabilidade
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+O projeto segue boas práticas de desenvolvimento como **SOLID**, **Design Patterns** e **autenticação segura**.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## **🛠️ Tecnologias Usadas**
+
+- **Front-end:** React, React Hook Form, Axios, React Router, React Google Charts
+- **Back-end:** Node.js, Express.js, Knex.js, Oracle Database, Swagger, Docker
+- **Banco de Dados:** Oracle Database
+
+---
+
+### 🏆 **Contribuições**
+
+Contribuições são bem-vindas! 🎉 Caso queira adicionar soluções, novos desafios ou melhorias:
+
+1. 🍴 Faça um fork do repositório.
+
+2. 🌿 Crie uma nova branch:
+
+   ```bash
+   git checkout -b minha-contribuicao
+   ```
+
+3. 📝 Adicione suas contribuições e faça um commit:
+
+   ```bash
+   git commit -m "Descrição das alterações"
+   ```
+
+4. 📤 Envie as alterações para o seu fork:
+
+   ```bash
+   git push origin minha-contribuicao
+   ```
+
+5. 🔀 Abra um pull request neste repositório.
+
+------
+
+### 🖋️ **Licença**
+
+Este repositório é destinado a fins educacionais e não possui qualquer relação oficial com o autor ou a editora do livro. O conteúdo aqui desenvolvido é baseado no aprendizado extraído do material, respeitando os direitos autorais.
+
+Este projeto está sob a licença [MIT](LICENSE).
+
+------
+
+✨ Bons estudos e mãos à obra! 🚀

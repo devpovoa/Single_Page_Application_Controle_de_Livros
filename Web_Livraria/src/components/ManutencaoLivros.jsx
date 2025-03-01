@@ -17,7 +17,9 @@ const ManutencaoLivros = () => {
     setLoading(true);
     setErrorMessage("");
     try {
-      const { data } = await inAxios.get(endpoint, { params });
+      const url = `${inAxios.defaults.baseURL}/${endpoint}`; // Verifica a URL gerada
+      console.log("URL da requisição:", url); // Debug da URL
+      const { data } = await inAxios.get(url, { params });
       if (data.length === 0) {
         setNoResults(true);
       } else {
@@ -36,7 +38,8 @@ const ManutencaoLivros = () => {
   }, []);
 
   const filtrarLista = (dados) => {
-    fetchLivros("livros/filtro", { palavra: dados.palavra });
+    const { palavra } = dados;
+    fetchLivros(`livros/filtro/${palavra}`);
   };
 
   const excluirRegistro = async (id, titulo) => {
