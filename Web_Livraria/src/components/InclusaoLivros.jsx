@@ -1,95 +1,204 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect } from "react";
+import { useForm, Controller } from "react-hook-form";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane, faEraser } from "@fortawesome/free-solid-svg-icons";
+import {
+  faBook,
+  faUser,
+  faImage,
+  faCalendar,
+  faDollarSign,
+  faPaperPlane,
+  faEraser,
+} from "@fortawesome/free-solid-svg-icons";
 import { inAxios } from "../api/config_axios";
+import { LocalizationProvider, DatePicker } from "@mui/x-date-pickers";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import dayjs from "dayjs";
+import CurrencyInput from "react-currency-input-field";
 
 const InclusaoLivros = () => {
-  const { register, handleSubmit, reset } = useForm();
+  const { register, handleSubmit, reset, control, setValue } = useForm();
   const [aviso, setAviso] = useState("");
-  const [formData, setFormData] = useState(null);
+  const [fotoPreview, setFotoPreview] = useState("");
+  const [imagemValida, setImagemValida] = useState(true);
+
+  useEffect(() => {
+    if (aviso) {
+      const timer = setTimeout(() => setAviso(""), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [aviso]);
+
+  useEffect(() => {
+    if (!fotoPreview) {
+      setImagemValida(true);
+      return;
+    }
+
+    const img = new Image();
+    img.src = fotoPreview;
+    img.onload = () => setImagemValida(true);
+    img.onerror = () => setImagemValida(false);
+  }, [fotoPreview]);
 
   const salvar = async (dados) => {
-    setFormData(dados);
+    const ano = dayjs(dados.ano).year();
+    dados.ano = ano;
+
+    const preco = parseFloat(
+      dados.preco.replace("R$ ", "").replace(".", "").replace(",", ".")
+    );
+    dados.preco = preco;
+
+    if (!imagemValida && fotoPreview) {
+      setAviso("❌ URL da imagem inválida!");
+      return;
+    }
 
     try {
       const response = await inAxios.post("livros", dados);
-      setAviso(`OK! Livro cadastrado com código ${response.data.id}`);
+      setAviso(
+        `✅ OK! Livro cadastrado com sucesso! ${
+          response.data?.id ? `Código: ${response.data.id}` : ""
+        }`
+      );
     } catch (err) {
-      setAviso(`Erro... Livro não cadastrado: ${err}`);
+      setAviso(`❌ Erro... Livro não cadastrado: ${err.message}`);
     }
-
-    setTimeout(() => {
-      setAviso("");
-    }, 5000);
-
-    reset({ titulo: "", autor: "", foto: "", ano: "", preco: "" });
-  };
-
-  const limpar = () => {
     reset();
-    setFormData(null);
+    setValue("ano", dayjs());
+    setFotoPreview("");
   };
 
   return (
     <div className="container">
-      <h4 className="fst-italic mt-3">Inclusão</h4>
+      <h4 className="fst-italic mt-3">Inclusão de Livros</h4>
+
       <form onSubmit={handleSubmit(salvar)}>
         <div className="form-group">
           <label htmlFor="titulo">Título:</label>
-          <input
-            type="text"
-            id="titulo"
-            className="form-control"
-            required
-            autoFocus
-            {...register("titulo")}
-          />
+          <div className="input-group">
+            <span className="input-group-text">
+              <FontAwesomeIcon icon={faBook} />
+            </span>
+            <input
+              type="text"
+              id="titulo"
+              className="form-control"
+              required
+              {...register("titulo")}
+            />
+          </div>
         </div>
+
         <div className="form-group mt-2">
           <label htmlFor="autor">Autor:</label>
-          <input
-            type="text"
-            id="autor"
-            className="form-control"
-            required
-            {...register("autor")}
-          />
+          <div className="input-group">
+            <span className="input-group-text">
+              <FontAwesomeIcon icon={faUser} />
+            </span>
+            <input
+              type="text"
+              id="autor"
+              className="form-control"
+              required
+              {...register("autor")}
+            />
+          </div>
         </div>
+
         <div className="form-group mt-2">
           <label htmlFor="foto">URL da Foto:</label>
-          <input
-            type="url"
-            id="foto"
-            className="form-control"
-            required
-            {...register("foto")}
-          />
+          <div className="input-group">
+            <span className="input-group-text">
+              <FontAwesomeIcon icon={faImage} />
+            </span>
+            <input
+              type="url"
+              id="foto"
+              className="form-control"
+              required
+              {...register("foto")}
+              onChange={(e) => setFotoPreview(e.target.value)}
+            />
+          </div>
+          {!imagemValida && fotoPreview && (
+            <div className="text-danger mt-1">⚠ URL da imagem inválida!</div>
+          )}
+          {imagemValida && fotoPreview && (
+            <img
+              src={fotoPreview}
+              alt="Prévia"
+              className="img-fluid mt-2"
+              style={{ maxWidth: "200px" }}
+            />
+          )}
         </div>
+
         <div className="row mt-2">
           <div className="col-sm-4">
             <div className="form-group">
               <label htmlFor="ano">Ano de Publicação:</label>
-              <input
-                type="number"
-                id="ano"
-                className="form-control"
-                required
-                {...register("ano")}
-              />
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faCalendar} />
+                </span>
+                <LocalizationProvider
+                  dateAdapter={AdapterDayjs}
+                  adapterLocale="pt-br"
+                >
+                  <Controller
+                    name="ano"
+                    control={control}
+                    defaultValue={dayjs()}
+                    render={({ field }) => (
+                      <DatePicker
+                        views={["year"]}
+                        label="Ano"
+                        value={field.value}
+                        onChange={(date) => setValue("ano", dayjs(date))}
+                        renderInput={({ inputRef, inputProps }) => (
+                          <input
+                            ref={inputRef}
+                            {...inputProps}
+                            className="form-control"
+                          />
+                        )}
+                      />
+                    )}
+                  />
+                </LocalizationProvider>
+              </div>
             </div>
           </div>
+
           <div className="col-sm-8">
             <div className="form-group">
               <label htmlFor="preco">Preço R$:</label>
-              <input
-                type="number"
-                step="0.01"
-                id="preco"
-                className="form-control"
-                required
-                {...register("preco")}
-              />
+              <div className="input-group">
+                <span className="input-group-text">
+                  <FontAwesomeIcon icon={faDollarSign} />
+                </span>
+                <Controller
+                  name="preco"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <CurrencyInput
+                      id="preco"
+                      className="form-control"
+                      prefix="R$ "
+                      decimalSeparator=","
+                      groupSeparator="."
+                      fixedDecimalLength={2}
+                      allowNegativeValue={false}
+                      placeholder="Digite o preço"
+                      onValueChange={(value) => setValue("preco", value)}
+                      value={field.value}
+                    />
+                  )}
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -102,28 +211,24 @@ const InclusaoLivros = () => {
           <button
             type="button"
             className="btn btn-danger btn-icon ms-3"
-            onClick={limpar}
+            onClick={() => {
+              reset();
+              setValue("ano", dayjs());
+              setFotoPreview("");
+            }}
           >
             <FontAwesomeIcon icon={faEraser} className="me-2" />
             Limpar
           </button>
         </div>
       </form>
-
-      {formData && (
+      {aviso && (
         <div
-          className={
-            aviso.startsWith("OK!")
-              ? "alert alert-success mt-4"
-              : aviso.startsWith("Erro")
-              ? "alert alert-danger mt-4"
-              : ""
-          }
+          className={`alert ${
+            aviso.startsWith("✅ OK!") ? "alert-success" : "alert-danger"
+          } mt-4`}
         >
           {aviso}
-          Dados submetidos com sucesso! <br />
-          <strong>Título:</strong> {formData.titulo} <br />
-          <strong>Autor:</strong> {formData.autor} <br />
         </div>
       )}
     </div>
