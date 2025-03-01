@@ -1,12 +1,36 @@
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaperPlane, faEraser } from "@fortawesome/free-solid-svg-icons";
 import { inAxios } from "../api/config_axios";
 
 const InclusaoLivros = () => {
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit, reset } = useForm();
+  const [aviso, setAviso] = useState("");
+  const [formData, setFormData] = useState(null);
 
-  const salvar = (campos) => {
-    JSON.stringify(campos);
+  const salvar = async (dados) => {
+    setFormData(dados);
+
+    try {
+      const response = await inAxios.post("livros", dados);
+      setAviso(`OK! Livro cadastrado com código ${response.data.id}`);
+    } catch (err) {
+      setAviso(`Erro... Livro não cadastrado: ${err}`);
+    }
+
+    setTimeout(() => {
+      setAviso("");
+    }, 5000);
+
+    reset({ titulo: "", autor: "", foto: "", ano: "", preco: "" });
   };
+
+  const limpar = () => {
+    reset();
+    setFormData(null);
+  };
+
   return (
     <div className="container">
       <h4 className="fst-italic mt-3">Inclusão</h4>
@@ -69,15 +93,41 @@ const InclusaoLivros = () => {
             </div>
           </div>
         </div>
-        <input type="submit" value="Enviar" className="btn btn-primary mt-3" />
-        <input
-          type="reset"
-          value="Limpar"
-          className="btn btn-danger mt-3 ms-3"
-        />
+
+        <div className="mt-3">
+          <button type="submit" className="btn btn-primary btn-icon">
+            <FontAwesomeIcon icon={faPaperPlane} className="me-2" />
+            Enviar
+          </button>
+          <button
+            type="button"
+            className="btn btn-danger btn-icon ms-3"
+            onClick={limpar}
+          >
+            <FontAwesomeIcon icon={faEraser} className="me-2" />
+            Limpar
+          </button>
+        </div>
       </form>
-      <div className="alert"></div>
+
+      {formData && (
+        <div
+          className={
+            aviso.startsWith("OK!")
+              ? "alert alert-success mt-4"
+              : aviso.startsWith("Erro")
+              ? "alert alert-danger mt-4"
+              : ""
+          }
+        >
+          {aviso}
+          Dados submetidos com sucesso! <br />
+          <strong>Título:</strong> {formData.titulo} <br />
+          <strong>Autor:</strong> {formData.autor} <br />
+        </div>
+      )}
     </div>
   );
 };
+
 export default InclusaoLivros;
